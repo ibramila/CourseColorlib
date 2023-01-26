@@ -10,6 +10,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 const { Schema } = mongoose;
+
 const courseScheme = new Schema(
     {
         name: {
@@ -41,6 +42,7 @@ const courseScheme = new Schema(
 );
 
 mongoose.set('strictQuery', false);
+
 const Courses = mongoose.model("courses", courseScheme);
 
 const PORT = process.env.PORT;
