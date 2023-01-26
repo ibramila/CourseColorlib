@@ -8,6 +8,7 @@ import "./style.scss"
 function AddSection() {
     const [state, setState] = useState({
         image: "",
+        
         name: "",
         price: null,
         category:"",
