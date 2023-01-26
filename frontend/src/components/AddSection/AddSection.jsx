@@ -51,6 +51,7 @@ function AddSection() {
                     ) : (
                         <></>
                     )}
+                    
                     <input {...register("image")}
                         type="text"
                         value={state.image}
