@@ -23,11 +23,15 @@ function PopularCourses() {
     });
   }, []);
 
-  const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:5000/courses/${id}`);
-    console.log("data is deleted");
-    console.log(id);
-  }
+  const deletePost = (id) => {
+    URL.delete(`/courses/${id}`);
+    setPosts(
+      posts.filter((post) => {
+        return post.id !== id;
+      })
+    );
+  };
+
 
   //!sort
   const sortData = () => {
@@ -56,7 +60,7 @@ function PopularCourses() {
           <h1>popular courses
           </h1>
           <div style={{ display: "flex", gap: "30px", justifyContent: "space-around" }}>
-            <input style={{padding:"20px", border:"none", borderBottom:"2px solid orange"}} placeholder='Filter data...' type='text' onChange={handleChanges} />
+            <input style={{ padding: "20px", border: "none", borderBottom: "2px solid orange" }} placeholder='Filter data...' type='text' onChange={handleChanges} />
             <button onClick={sortData}>Sort Data</button>
           </div>
 
@@ -79,7 +83,7 @@ function PopularCourses() {
                         <h6>{post.name},</h6>
                         <span>{post.category}</span>
                       </ul>
-                      <button onClick={() => handleDelete(post._id)}>
+                      <button onClick={() => deletePost(post._id)}>
                         <AiFillDelete style={{ fontSize: "30px", color: "red" }} />
                       </button>
                       <div className='price'>

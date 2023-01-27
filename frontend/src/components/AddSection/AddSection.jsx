@@ -6,6 +6,7 @@ import axios from "axios"
 import "./style.scss"
 
 function AddSection() {
+
     const [state, setState] = useState({
         image: "",
         name: "",
@@ -15,40 +16,54 @@ function AddSection() {
         title: ""
     });
 
+    const URL = axios.create({
+        baseURL: "http://localhost:5000"
+    });
 
-    const addData = () => {
-        axios.post("http://localhost:5000/courses", state)
+    const addState = () => {
+        URL
+            .post('/courses', {
+                title: state.title,
+                image: state.image,
+                name: state.name,
+                price: state.price,
+                category: state.category,
+                information: state.information,
+            })
+            .then((response) => {
+                setState([response.data, ...state]);
+                console.log(state)
+            });
 
         setState({
             image: '',
             title: '',
-            content: '',
-            authorPhoto: '',
-            authorName: '',
+            name: '',
+            category: '',
+            information: '',
             price: ''
         })
-    }
+    };
+    
+    const handleChange = (e) => {
+        setState({ ...state, [e.target.name]: e.target.value });
+    };
 
-    //yup
+    const onSubmit = (data) => {
+        console.log(data);
+        addState()
+    };
+
+    //! yup
     const {
         register,
         handleSubmit,
         formState: { errors }
     } = useForm({ resolver: yupResolver(postFormSchema) });
 
-    const onSubmit = (data) => {
-        console.log(data);
-        addData()
-    };
-
-    const handleChange = (e) => {
-        setState({ ...state, [e.target.name]: e.target.value });
-    };
-
     return (
         <>
             <div className='form_wrapper'>
-
                 <form className='form' onSubmit={handleSubmit(onSubmit)}>
                     <h1>Add image</h1>
                     <input {...register("name")}
@@ -133,7 +148,6 @@ function AddSection() {
                     <button>Submit</button>
                 </form>
             </div>
-
         </>
     )
 }
