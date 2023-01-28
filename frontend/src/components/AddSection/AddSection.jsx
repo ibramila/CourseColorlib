@@ -6,7 +6,6 @@ import axios from "axios"
 import "./style.scss"
 
 function AddSection() {
-
     const [state, setState] = useState({
         image: "",
         name: "",
@@ -16,9 +15,21 @@ function AddSection() {
         title: ""
     });
 
+    //! yup
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+    } = useForm({ resolver: yupResolver(postFormSchema) });
+    
     const URL = axios.create({
         baseURL: "http://localhost:5000"
     });
+
+    // !changable of input
+    const handleChange = (e) => {
+        setState({ ...state, [e.target.name]: e.target.value });
+    };
 
     const addState = () => {
         URL
@@ -44,22 +55,11 @@ function AddSection() {
             price: ''
         })
     };
-    
-    const handleChange = (e) => {
-        setState({ ...state, [e.target.name]: e.target.value });
-    };
 
     const onSubmit = (data) => {
         console.log(data);
         addState()
     };
-
-    //! yup
-    const {
-        register,
-        handleSubmit,
-        formState: { errors }
-    } = useForm({ resolver: yupResolver(postFormSchema) });
 
     return (
         <>

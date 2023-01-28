@@ -4,25 +4,26 @@ import axios from "axios";
 import { BsPersonCircle } from "react-icons/bs"
 import { AiFillDelete } from "react-icons/ai"
 function PopularCourses() {
-
+  //! data
   const [posts, setPosts] = useState([]);
-  const [value, setValue] = useState('')
+
+  //! changeable input
+  const [value, setValue] = useState('');
+  //! sort
   const [sorted, setSorted] = useState({
     sorted: "price", reversed: false
   })
-
-
+  // ! axiosGET
   const URL = axios.create({
     baseURL: "http://localhost:5000"
   });
-
-
   useEffect(() => {
     URL.get('/courses').then((response) => {
       setPosts(response.data);
     });
   }, []);
 
+  //! delete 
   const deletePost = (id) => {
     URL.delete(`/courses/${id}`);
     setPosts(
@@ -32,24 +33,21 @@ function PopularCourses() {
     );
   };
 
-
   //!sort
   const sortData = () => {
     setSorted({ sorted: "price", reversed: !sorted.reversed })
     const dataCopy = [...posts]
-
     dataCopy.sort((a, b) => {
       if (sorted.reversed) {
-        return a.price - b.price
+        return a.price - b.price;
       }
-      return b.price - a.price
-    })
-    setPosts(dataCopy)
+      return b.price - a.price;
+    });
+    setPosts(dataCopy);
   }
-
   //!filter
-  const handleChanges = (e) => {
-    setValue(e.target.value)
+  const handleFilter = (e) => {
+    setValue(e.target.value);
   }
 
   return (
@@ -60,14 +58,14 @@ function PopularCourses() {
           <h1>popular courses
           </h1>
           <div style={{ display: "flex", gap: "30px", justifyContent: "space-around" }}>
-            <input style={{ padding: "20px", border: "none", borderBottom: "2px solid orange" }} placeholder='Filter data...' type='text' onChange={handleChanges} />
+            <input style={{ padding: "20px", border: "none", borderBottom: "2px solid orange" }} placeholder='Filter data...' type='text' onChange={handleFilter} />
             <button onClick={sortData}>Sort Data</button>
           </div>
 
           <ul className='cards' >
             {posts
               .filter(data => {
-                return value.trim().toLowerCase() === "" ? data : data.title.toLowerCase().includes(value.toLowerCase())
+                return value.trim().toLowerCase() === "" ? data : data.name.toLowerCase().includes(value.toLowerCase())
               })
               .map((post) => {
                 return (
