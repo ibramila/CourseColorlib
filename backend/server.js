@@ -47,13 +47,16 @@ const Courses = mongoose.model("courses", courseScheme);
 
 const PORT = process.env.PORT;
 const DB = process.env.DB_URL.replace("<password>", process.env.DB_PASSWORD)
+
 mongoose.connect(DB, (err) => {
-    console.log(err);
     if (!err) {
         console.log("Connected");
         app.listen(PORT, () => {
             console.log(`Port:${PORT}`);
         })
+    }
+    else {
+        console.log(err);
     }
 })
 
